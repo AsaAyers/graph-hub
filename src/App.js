@@ -3,13 +3,7 @@ import { gql, graphql } from 'react-apollo';
 
 import './App.css';
 
-const MyQuery = gql`
-query Foo {
-  viewer {
-    login
-  }
-}
-`;
+const MyQuery = gql(["query Foo { Xviewer { login } }"])
 
 
 class App extends Component {

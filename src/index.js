@@ -1,27 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
+import createClient from './apollo-client'
+import schema from './schema.json'
 import App from './App';
 import './index.css';
 
-const networkInterface = createNetworkInterface({
-    uri: 'https://api.github.com/graphql',
-});
-networkInterface.use([{
-    applyMiddleware(req, next) {
-        if (!req.options.headers) {
-            req.options.headers = {};  // Create the header object if needed.
-        }
-        const token = process.env.REACT_APP_TOKEN
-        req.options.headers.authorization = token ? `Bearer ${token}` : null;
-        next();
-    }
-}]);
+console.log('schema: ', schema)
 
-const client = global.client = new ApolloClient({
-    networkInterface: networkInterface
-});
+const client = global.client = createClient({
+    __schema: schema.__schema
+})
+
+
 
 ReactDOM.render(
     <ApolloProvider client={client}>
